@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scenario name="Basic UAC scenario">
+ <send>
+  <![CDATA[  
+  INVITE sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut <sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port]>
+  Call-ID: [call_id]
+  Cseq: 1 INVITE
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Type: application/sdp
+  Content-Length: 0
+  ]]>
+ </send>
+
+ <recv response="100" optional="true">
+ </recv>
+ 
+ <recv response="180" optional="true">
+ </recv>
+ 
+ <recv response="200">
+ </recv>
+
+ <send>
+  <![CDATA[
+  ACK sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut <sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port]>[peer_tag_param]
+  Call-ID: [call_id]
+  Cseq: 1 ACK
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Length: 0
+  ]]>
+ </send>
+
+ <pause milliseconds="5000"/>
+
+ <send retrans="500">
+  <![CDATA[
+  BYE sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port] SIP/2.0
+  Via: SIP/2.0/[transport] [local_ip]:[local_port]
+  From: sipp  <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+  To: sut  <sip:[field0 file="callee.csv"]@[remote_ip]:[remote_port]>[peer_tag_param]
+  Call-ID: [call_id]
+  Cseq: 2 BYE
+  Contact: sip:sipp@[local_ip]:[local_port]
+  Content-Length: 0
+  ]]>
+ </send>
+
+ <recv response="200">
+ </recv>
+
+</scenario>
